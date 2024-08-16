@@ -3,7 +3,7 @@
 from copy import copy
 
 from ultralytics.models import yolo
-from ultralytics.nn.tasks import SegmentationModel
+from ultralytics.nn.tasks import LDSegModel
 from ultralytics.utils import DEFAULT_CFG, RANK
 from ultralytics.utils.plotting import plot_images, plot_results
 
@@ -28,3 +28,11 @@ class LDSegTrainer(yolo.segment.SegmentationTrainer):
             overrides = {}
         overrides["task"] = "ldseg"
         super().__init__(cfg, overrides, _callbacks)
+
+    def get_model(self, cfg=None, weights=None, verbose=True):
+        """Return SegmentationModel initialized with specified config and weights."""
+        model = LDSegModel(cfg, ch=3, nc=self.data["nc"], verbose=verbose and RANK == -1)
+        if weights:
+            model.load(weights)
+
+        return model
