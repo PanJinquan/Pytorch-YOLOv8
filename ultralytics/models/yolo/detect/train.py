@@ -40,7 +40,26 @@ class DetectionTrainer(BaseTrainer):
             batch (int, optional): Size of batches, this is for `rect`. Defaults to None.
         """
         gs = max(int(de_parallel(self.model).stride.max() if self.model else 0), 32)
-        return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == "val", stride=gs)
+        # return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == "val", stride=gs)
+        import os, sys
+
+        sys.path.insert(0, os.getcwd())  # fix: 解决多卡无法导入libs库的问题
+        data_type = self.data.get('data_type', "").lower()
+        if data_type == "coco":
+            from ultralytics.libs.datasets.cocodataset import build_coco_dataset
+
+            return build_coco_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == 'val', stride=gs)
+        elif data_type == "voc":
+            from ultralytics.libs.datasets.vocdataset import build_voc_dataset
+
+            return build_voc_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == 'val', stride=gs)
+        elif data_type == "labelme":
+            from ultralytics.libs.datasets.lalelmedataset import build_labelme_dataset
+
+            return build_labelme_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == 'val',
+                                         stride=gs)
+        else:
+            return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == "val", stride=gs)
 
     def get_dataloader(self, dataset_path, batch_size=16, rank=0, mode="train"):
         """Construct and return dataloader."""
