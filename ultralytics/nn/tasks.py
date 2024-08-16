@@ -369,9 +369,9 @@ class DetectionModel(BaseModel):
     def _clip_augmented(self, y):
         """Clip YOLO augmented inference tails."""
         nl = self.model[-1].nl  # number of detection layers (P3-P5)
-        g = sum(4**x for x in range(nl))  # grid points
+        g = sum(4 ** x for x in range(nl))  # grid points
         e = 1  # exclude layer count
-        i = (y[0].shape[-1] // g) * sum(4**x for x in range(e))  # indices
+        i = (y[0].shape[-1] // g) * sum(4 ** x for x in range(e))  # indices
         y[0] = y[0][..., :-i]  # large
         i = (y[-1].shape[-1] // g) * sum(4 ** (nl - 1 - x) for x in range(e))  # indices
         y[-1] = y[-1][..., i:]  # small
@@ -395,6 +395,18 @@ class OBBModel(DetectionModel):
 
 
 class SegmentationModel(DetectionModel):
+    """YOLOv8 segmentation model."""
+
+    def __init__(self, cfg="yolov8n-seg.yaml", ch=3, nc=None, verbose=True):
+        """Initialize YOLOv8 segmentation model with given config and parameters."""
+        super().__init__(cfg=cfg, ch=ch, nc=nc, verbose=verbose)
+
+    def init_criterion(self):
+        """Initialize the loss criterion for the SegmentationModel."""
+        return v8SegmentationLoss(self)
+
+
+class LDSegModel(SegmentationModel):
     """YOLOv8 segmentation model."""
 
     def __init__(self, cfg="yolov8n-seg.yaml", ch=3, nc=None, verbose=True):
@@ -608,7 +620,7 @@ class WorldModel(DetectionModel):
             import clip
 
         if (
-            not getattr(self, "clip_model", None) and cache_clip_model
+                not getattr(self, "clip_model", None) and cache_clip_model
         ):  # for backwards compatibility of models lacking clip_model attribute
             self.clip_model = clip.load("ViT-B/32")[0]
         model = self.clip_model if cache_clip_model else clip.load("ViT-B/32")[0]
@@ -768,15 +780,15 @@ def torch_safe_load(weight):
     file = attempt_download_asset(weight)  # search online if missing locally
     try:
         with temporary_modules(
-            modules={
-                "ultralytics.yolo.utils": "ultralytics.utils",
-                "ultralytics.yolo.v8": "ultralytics.models.yolo",
-                "ultralytics.yolo.data": "ultralytics.data",
-            },
-            attributes={
-                "ultralytics.nn.modules.block.Silence": "torch.nn.Identity",  # YOLOv9e
-                "ultralytics.nn.tasks.YOLOv10DetectionModel": "ultralytics.nn.tasks.DetectionModel",  # YOLOv10
-            },
+                modules={
+                    "ultralytics.yolo.utils": "ultralytics.utils",
+                    "ultralytics.yolo.v8": "ultralytics.models.yolo",
+                    "ultralytics.yolo.data": "ultralytics.data",
+                },
+                attributes={
+                    "ultralytics.nn.modules.block.Silence": "torch.nn.Identity",  # YOLOv9e
+                    "ultralytics.nn.tasks.YOLOv10DetectionModel": "ultralytics.nn.tasks.DetectionModel",  # YOLOv10
+                },
         ):
             ckpt = torch.load(file, map_location="cpu")
 

@@ -95,7 +95,7 @@ class Detect(nn.Module):
 
         if self.export and self.format in {"saved_model", "pb", "tflite", "edgetpu", "tfjs"}:  # avoid TF FlexSplitV ops
             box = x_cat[:, : self.reg_max * 4]
-            cls = x_cat[:, self.reg_max * 4 :]
+            cls = x_cat[:, self.reg_max * 4:]
         else:
             box, cls = x_cat.split((self.reg_max * 4, self.nc), 1)
 
@@ -186,6 +186,13 @@ class Segment(Detect):
         if self.training:
             return x, mc, p
         return (torch.cat([x, mc], 1), p) if self.export else (torch.cat([x[0], mc], 1), (x[1], mc, p))
+
+
+class LDSeg(Segment):
+    """YOLOv8 Segment head for segmentation models."""
+
+    def __init__(self, nc=80, nm=32, npr=256, ch=()):
+        super().__init__(nc=nc, nm=nm, npr=npr, ch=ch)
 
 
 class OBB(Detect):
@@ -306,7 +313,7 @@ class WorldDetect(Detect):
 
         if self.export and self.format in {"saved_model", "pb", "tflite", "edgetpu", "tfjs"}:  # avoid TF FlexSplitV ops
             box = x_cat[:, : self.reg_max * 4]
-            cls = x_cat[:, self.reg_max * 4 :]
+            cls = x_cat[:, self.reg_max * 4:]
         else:
             box, cls = x_cat.split((self.reg_max * 4, self.nc), 1)
 
@@ -346,23 +353,23 @@ class RTDETRDecoder(nn.Module):
     export = False  # export mode
 
     def __init__(
-        self,
-        nc=80,
-        ch=(512, 1024, 2048),
-        hd=256,  # hidden dim
-        nq=300,  # num queries
-        ndp=4,  # num decoder points
-        nh=8,  # num head
-        ndl=6,  # num decoder layers
-        d_ffn=1024,  # dim of feedforward
-        dropout=0.0,
-        act=nn.ReLU(),
-        eval_idx=-1,
-        # Training args
-        nd=100,  # num denoising
-        label_noise_ratio=0.5,
-        box_noise_scale=1.0,
-        learnt_init_query=False,
+            self,
+            nc=80,
+            ch=(512, 1024, 2048),
+            hd=256,  # hidden dim
+            nq=300,  # num queries
+            ndp=4,  # num decoder points
+            nh=8,  # num head
+            ndl=6,  # num decoder layers
+            d_ffn=1024,  # dim of feedforward
+            dropout=0.0,
+            act=nn.ReLU(),
+            eval_idx=-1,
+            # Training args
+            nd=100,  # num denoising
+            label_noise_ratio=0.5,
+            box_noise_scale=1.0,
+            learnt_init_query=False,
     ):
         """
         Initializes the RTDETRDecoder module with the given parameters.
@@ -474,7 +481,7 @@ class RTDETRDecoder(nn.Module):
 
             valid_WH = torch.tensor([w, h], dtype=dtype, device=device)
             grid_xy = (grid_xy.unsqueeze(0) + 0.5) / valid_WH  # (1, h, w, 2)
-            wh = torch.ones_like(grid_xy, dtype=dtype, device=device) * grid_size * (2.0**i)
+            wh = torch.ones_like(grid_xy, dtype=dtype, device=device) * grid_size * (2.0 ** i)
             anchors.append(torch.cat([grid_xy, wh], -1).view(-1, h * w, 4))  # (1, h*w, 4)
 
         anchors = torch.cat(anchors, 1)  # (1, h*w*nl, 4)
