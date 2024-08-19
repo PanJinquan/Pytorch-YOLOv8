@@ -449,7 +449,13 @@ class v8LDSegLoss(v8SegmentationLoss):
         super().__init__(model)
 
     def __call__(self, preds, batch):
-        loss = super(v8LDSegLoss, self).__call__(preds, batch)
+        """
+        preds[0:3]是实例分割
+        preds[3]是语义分割
+        """
+        x1 = preds[:len(preds) - 1]
+        x2 = preds[-1]
+        loss = super(v8LDSegLoss, self).__call__(x1, batch)
         return loss
 
 

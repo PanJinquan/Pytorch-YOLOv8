@@ -192,7 +192,17 @@ class LDSeg(Segment):
     """YOLOv8 Segment head for segmentation models."""
 
     def __init__(self, nc=80, nm=32, npr=256, ch=()):
-        super().__init__(nc=nc, nm=nm, npr=npr, ch=ch)
+        super().__init__(nc=nc, nm=nm, npr=npr, ch=ch[0:3])
+        self.lgseg = nn.Sequential(Conv(ch[3], 32, 3),
+                                   Conv(32, 32, 3),
+                                   nn.Conv2d(32, 2, 1))
+
+    def forward(self, x):
+        x1, x2 = x[0:3], x[3]
+        y1 = super(LDSeg, self).forward(x1)
+        y2 = self.lgseg(x2)
+        y = (*y1, y2)
+        return y
 
 
 class OBB(Detect):
