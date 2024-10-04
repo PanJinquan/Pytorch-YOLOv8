@@ -1006,7 +1006,9 @@ class RandomPerspective:
 
         self.degrees = degrees
         self.translate = translate
-        self.scale = scale
+        # self.scale = scale
+        import numbers
+        self.scale = [scale, scale] if isinstance(scale, numbers.Number) else scale
         self.shear = shear
         self.perspective = perspective
         self.border = border  # mosaic border
@@ -1052,7 +1054,8 @@ class RandomPerspective:
         R = np.eye(3, dtype=np.float32)
         a = random.uniform(-self.degrees, self.degrees)
         # a += random.choice([-180, -90, 0, 90])  # add 90deg rotations to small rotations
-        s = random.uniform(1 - self.scale, 1 + self.scale)
+        # s = random.uniform(1 - self.scale, 1 + self.scale)
+        s = random.uniform(1 - self.scale[0], 1 + self.scale[1])
         # s = 2 ** random.uniform(-scale, scale)
         R[:2] = cv2.getRotationMatrix2D(angle=a, center=(0, 0), scale=s)
 
