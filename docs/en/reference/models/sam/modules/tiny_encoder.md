@@ -5,7 +5,7 @@ keywords: Ultralytics, TinyViT, Conv2d_BN, PatchEmbed, MBConv, Attention, PyTorc
 
 # Reference for `ultralytics/models/sam/modules/tiny_encoder.py`
 
-!!! Note
+!!! note
 
     This file is available at [https://github.com/ultralytics/ultralytics/blob/main/ultralytics/models/sam/modules/tiny_encoder.py](https://github.com/ultralytics/ultralytics/blob/main/ultralytics/models/sam/modules/tiny_encoder.py). If you spot a problem please help fix it by [contributing](https://docs.ultralytics.com/help/contributing/) a [Pull Request](https://github.com/ultralytics/ultralytics/edit/main/ultralytics/models/sam/modules/tiny_encoder.py) 🛠️. Thank you 🙏!
 
@@ -31,7 +31,7 @@ keywords: Ultralytics, TinyViT, Conv2d_BN, PatchEmbed, MBConv, Attention, PyTorc
 
 <br><br><hr><br>
 
-## ::: ultralytics.models.sam.modules.tiny_encoder.Mlp
+## ::: ultralytics.models.sam.modules.tiny_encoder.MLP
 
 <br><br><hr><br>
 

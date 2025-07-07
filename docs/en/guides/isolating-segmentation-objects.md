@@ -1,7 +1,7 @@
 ---
 comments: true
 description: Learn to extract isolated objects from inference results using Ultralytics Predict Mode. Step-by-step guide for segmentation object isolation.
-keywords: Ultralytics, segmentation, object isolation, Predict Mode, YOLOv8, machine learning, object detection, binary mask, image processing
+keywords: Ultralytics, segmentation, object isolation, Predict Mode, YOLO11, machine learning, object detection, binary mask, image processing
 ---
 
 # Isolating Segmentation Objects
@@ -9,7 +9,7 @@ keywords: Ultralytics, segmentation, object isolation, Predict Mode, YOLOv8, mac
 After performing the [Segment Task](../tasks/segment.md), it's sometimes desirable to extract the isolated objects from the inference results. This guide provides a generic recipe on how to accomplish this using the Ultralytics [Predict Mode](../modes/predict.md).
 
 <p align="center">
-  <img src="https://github.com/ultralytics/ultralytics/assets/62214284/1787d76b-ad5f-43f9-a39c-d45c9157f38a" alt="Example Isolated Object Segmentation">
+  <img src="https://github.com/ultralytics/docs/releases/download/0/isolated-object-segmentation.avif" alt="Example Isolated Object Segmentation">
 </p>
 
 ## Recipe Walk Through
@@ -24,7 +24,7 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
     from ultralytics import YOLO
 
     # Load a model
-    model = YOLO("yolov8n-seg.pt")
+    model = YOLO("yolo11n-seg.pt")
 
     # Run inference
     results = model.predict()
@@ -96,20 +96,16 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
 
     1. For more info on `c.masks.xy` see [Masks Section from Predict Mode](../modes/predict.md#masks).
 
-    2. Here the values are cast into `np.int32` for compatibility with `drawContours()` function from OpenCV.
+    2. Here the values are cast into `np.int32` for compatibility with `drawContours()` function from [OpenCV](https://www.ultralytics.com/glossary/opencv).
 
     3. The OpenCV `drawContours()` function expects contours to have a shape of `[N, 1, 2]` expand section below for more details.
 
     <details>
     <summary> Expand to understand what is happening when defining the <code>contour</code> variable.</summary>
     <p>
-
     - `c.masks.xy` :: Provides the coordinates of the mask contour points in the format `(x, y)`. For more details, refer to the [Masks Section from Predict Mode](../modes/predict.md#masks).
-
     - `.pop()` :: As `masks.xy` is a list containing a single element, this element is extracted using the `pop()` method.
-
     - `.astype(np.int32)` :: Using `masks.xy` will return with a data type of `float32`, but this won't be compatible with the OpenCV `drawContours()` function, so this will change the data type to `int32` for compatibility.
-
     - `.reshape(-1, 1, 2)` :: Reformats the data into the required shape of `[N, 1, 2]` where `N` is the number of contour points, with each point represented by a single entry `1`, and the entry is composed of `2` values. The `-1` denotes that the number of values along this dimension is flexible.
 
     </details>
@@ -117,15 +113,10 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
     <details>
     <summary> Expand for an explanation of the <code>drawContours()</code> configuration.</summary>
     <p>
-
     - Encapsulating the `contour` variable within square brackets, `[contour]`, was found to effectively generate the desired contour mask during testing.
-
     - The value `-1` specified for the `drawContours()` parameter instructs the function to draw all contours present in the image.
-
     - The `tuple` `(255, 255, 255)` represents the color white, which is the desired color for drawing the contour in this binary mask.
-
     - The addition of `cv2.FILLED` will color all pixels enclosed by the contour boundary the same, in this case, all enclosed pixels will be white.
-
     - See [OpenCV Documentation on `drawContours()`](https://docs.opencv.org/4.8.0/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc) for more information.
 
     </details>
@@ -137,11 +128,11 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
 
     ### Object Isolation Options
 
-    !!! example ""
+    !!! example
 
         === "Black Background Pixels"
 
-            ```py
+            ```python
             # Create 3-channel mask
             mask3ch = cv2.cvtColor(b_mask, cv2.COLOR_GRAY2BGR)
 
@@ -162,7 +153,7 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
                 There are no additional steps required if keeping full size image.
 
                 <figure markdown>
-                    ![Example Full size Isolated Object Image Black Background](https://github.com/ultralytics/ultralytics/assets/62214284/845c00d0-52a6-4b1e-8010-4ba73e011b99){ width=240 }
+                    ![Example Full size Isolated Object Image Black Background](https://github.com/ultralytics/docs/releases/download/0/full-size-isolated-object-black-background.avif){ width=240 }
                     <figcaption>Example full-size output</figcaption>
                 </figure>
 
@@ -170,7 +161,7 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
 
                 Additional steps required to crop image to only include object region.
 
-                ![Example Crop Isolated Object Image Black Background](https://github.com/ultralytics/ultralytics/assets/62214284/103dbf90-c169-4f77-b791-76cdf09c6f22){ align="right" }
+                ![Example Crop Isolated Object Image Black Background](https://github.com/ultralytics/docs/releases/download/0/example-crop-isolated-object-image-black-background.avif){ align="right" }
                 ```{ .py .annotate }
                 # (1) Bounding box coordinates
                 x1, y1, x2, y2 = c.boxes.xyxy.cpu().numpy().squeeze().astype(np.int32)
@@ -178,7 +169,7 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
                 iso_crop = isolated[y1:y2, x1:x2]
                 ```
 
-                1.  For more information on bounding box results, see [Boxes Section from Predict Mode](../modes/predict.md/#boxes)
+                1.  For more information on [bounding box](https://www.ultralytics.com/glossary/bounding-box) results, see [Boxes Section from Predict Mode](../modes/predict.md/#boxes)
 
                 ??? question "What does this code do?"
 
@@ -192,7 +183,7 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
 
         === "Transparent Background Pixels"
 
-            ```py
+            ```python
             # Isolate object with transparent background (when saved as PNG)
             isolated = np.dstack([img, b_mask])
             ```
@@ -208,7 +199,7 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
                 There are no additional steps required if keeping full size image.
 
                 <figure markdown>
-                    ![Example Full size Isolated Object Image No Background](https://github.com/ultralytics/ultralytics/assets/62214284/b1043ee0-369a-4019-941a-9447a9771042){ width=240 }
+                    ![Example Full size Isolated Object Image No Background](https://github.com/ultralytics/docs/releases/download/0/example-full-size-isolated-object-image-no-background.avif){ width=240 }
                     <figcaption>Example full-size output + transparent background</figcaption>
                 </figure>
 
@@ -216,7 +207,7 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
 
                 Additional steps required to crop image to only include object region.
 
-                ![Example Crop Isolated Object Image No Background](https://github.com/ultralytics/ultralytics/assets/62214284/5910244f-d1e1-44af-af7f-6dea4c688da8){ align="right" }
+                ![Example Crop Isolated Object Image No Background](https://github.com/ultralytics/docs/releases/download/0/example-crop-isolated-object-image-no-background.avif){ align="right" }
                 ```{ .py .annotate }
                 # (1) Bounding box coordinates
                 x1, y1, x2, y2 = c.boxes.xyxy.cpu().numpy().squeeze().astype(np.int32)
@@ -243,17 +234,16 @@ After performing the [Segment Task](../tasks/segment.md), it's sometimes desirab
     ***
 
 6.  <u>What to do next is entirely left to you as the developer.</u> A basic example of one possible next step (saving the image to file for future use) is shown.
-
     - **NOTE:** this step is optional and can be skipped if not required for your specific use case.
 
     ??? example "Example Final Step"
 
-        ```py
+        ```python
         # Save isolated object to file
         _ = cv2.imwrite(f"{img_name}_{label}-{ci}.png", iso_crop)
         ```
 
-        - In this example, the `img_name` is the base-name of the source image file, `label` is the detected class-name, and `ci` is the index of the object detection (in case of multiple instances with the same class name).
+        - In this example, the `img_name` is the base-name of the source image file, `label` is the detected class-name, and `ci` is the index of the [object detection](https://www.ultralytics.com/glossary/object-detection) (in case of multiple instances with the same class name).
 
 ## Full Example code
 
@@ -267,7 +257,7 @@ import numpy as np
 
 from ultralytics import YOLO
 
-m = YOLO("yolov8n-seg.pt")  # (4)!
+m = YOLO("yolo11n-seg.pt")  # (4)!
 res = m.predict()  # (3)!
 
 # Iterate detection results (5)
@@ -310,16 +300,16 @@ for r in res:
 
 ## FAQ
 
-### How do I isolate objects using Ultralytics YOLOv8 for segmentation tasks?
+### How do I isolate objects using Ultralytics YOLO11 for segmentation tasks?
 
-To isolate objects using Ultralytics YOLOv8, follow these steps:
+To isolate objects using Ultralytics YOLO11, follow these steps:
 
 1. **Load the model and run inference:**
 
     ```python
     from ultralytics import YOLO
 
-    model = YOLO("yolov8n-seg.pt")
+    model = YOLO("yolo11n-seg.pt")
     results = model.predict(source="path/to/your/image.jpg")
     ```
 
@@ -345,7 +335,7 @@ Refer to the guide on [Predict Mode](../modes/predict.md) and the [Segment Task]
 
 ### What options are available for saving the isolated objects after segmentation?
 
-Ultralytics YOLOv8 offers two main options for saving isolated objects:
+Ultralytics YOLO11 offers two main options for saving isolated objects:
 
 1. **With a Black Background:**
 
@@ -361,7 +351,7 @@ Ultralytics YOLOv8 offers two main options for saving isolated objects:
 
 For further details, visit the [Predict Mode](../modes/predict.md) section.
 
-### How can I crop isolated objects to their bounding boxes using Ultralytics YOLOv8?
+### How can I crop isolated objects to their bounding boxes using Ultralytics YOLO11?
 
 To crop isolated objects to their bounding boxes:
 
@@ -378,9 +368,9 @@ To crop isolated objects to their bounding boxes:
 
 Learn more about bounding box results in the [Predict Mode](../modes/predict.md#boxes) documentation.
 
-### Why should I use Ultralytics YOLOv8 for object isolation in segmentation tasks?
+### Why should I use Ultralytics YOLO11 for object isolation in segmentation tasks?
 
-Ultralytics YOLOv8 provides:
+Ultralytics YOLO11 provides:
 
 - **High-speed** real-time object detection and segmentation.
 - **Accurate bounding box and mask generation** for precise object isolation.
@@ -388,9 +378,9 @@ Ultralytics YOLOv8 provides:
 
 Explore the benefits of using YOLO in the [Segment Task documentation](../tasks/segment.md).
 
-### Can I save isolated objects including the background using Ultralytics YOLOv8?
+### Can I save isolated objects including the background using Ultralytics YOLO11?
 
-Yes, this is a built-in feature in Ultralytics YOLOv8. Use the `save_crop` argument in the `predict()` method. For example:
+Yes, this is a built-in feature in Ultralytics YOLO11. Use the `save_crop` argument in the `predict()` method. For example:
 
 ```python
 results = model.predict(source="path/to/your/image.jpg", save_crop=True)

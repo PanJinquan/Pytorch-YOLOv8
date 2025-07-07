@@ -6,7 +6,7 @@ keywords: YOLO-World, Ultralytics, open-vocabulary detection, YOLOv8, real-time 
 
 # YOLO-World Model
 
-The YOLO-World Model introduces an advanced, real-time [Ultralytics](https://ultralytics.com) [YOLOv8](yolov8.md)-based approach for Open-Vocabulary Detection tasks. This innovation enables the detection of any object within an image based on descriptive texts. By significantly lowering computational demands while preserving competitive performance, YOLO-World emerges as a versatile tool for numerous vision-based applications.
+The YOLO-World Model introduces an advanced, real-time [Ultralytics](https://www.ultralytics.com/) [YOLOv8](yolov8.md)-based approach for Open-Vocabulary Detection tasks. This innovation enables the detection of any object within an image based on descriptive texts. By significantly lowering computational demands while preserving competitive performance, YOLO-World emerges as a versatile tool for numerous vision-based applications.
 
 <p align="center">
   <br>
@@ -19,11 +19,11 @@ The YOLO-World Model introduces an advanced, real-time [Ultralytics](https://ult
   <strong>Watch:</strong> YOLO World training workflow on custom dataset
 </p>
 
-![YOLO-World Model architecture overview](https://github.com/ultralytics/ultralytics/assets/26833433/31105058-78c1-43ef-9573-4f41b06df531)
+![YOLO-World Model architecture overview](https://github.com/ultralytics/docs/releases/download/0/yolo-world-model-architecture-overview.avif)
 
 ## Overview
 
-YOLO-World tackles the challenges faced by traditional Open-Vocabulary detection models, which often rely on cumbersome Transformer models requiring extensive computational resources. These models' dependence on pre-defined object categories also restricts their utility in dynamic scenarios. YOLO-World revitalizes the YOLOv8 framework with open-vocabulary detection capabilities, employing vision-language modeling and pre-training on expansive datasets to excel at identifying a broad array of objects in zero-shot scenarios with unmatched efficiency.
+YOLO-World tackles the challenges faced by traditional Open-Vocabulary detection models, which often rely on cumbersome [Transformer](https://www.ultralytics.com/glossary/transformer) models requiring extensive computational resources. These models' dependence on pre-defined object categories also restricts their utility in dynamic scenarios. YOLO-World revitalizes the YOLOv8 framework with open-vocabulary detection capabilities, employing vision-[language modeling](https://www.ultralytics.com/glossary/language-modeling) and pre-training on expansive datasets to excel at identifying a broad array of objects in zero-shot scenarios with unmatched efficiency.
 
 ## Key Features
 
@@ -43,51 +43,55 @@ YOLO-World tackles the challenges faced by traditional Open-Vocabulary detection
 
 This section details the models available with their specific pre-trained weights, the tasks they support, and their compatibility with various operating modes such as [Inference](../modes/predict.md), [Validation](../modes/val.md), [Training](../modes/train.md), and [Export](../modes/export.md), denoted by ✅ for supported modes and ❌ for unsupported modes.
 
-!!! Note
+!!! note
 
     All the YOLOv8-World weights have been directly migrated from the official [YOLO-World](https://github.com/AILab-CVC/YOLO-World) repository, highlighting their excellent contributions.
 
 | Model Type      | Pre-trained Weights                                                                                     | Tasks Supported                        | Inference | Validation | Training | Export |
 | --------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------- | --------- | ---------- | -------- | ------ |
-| YOLOv8s-world   | [yolov8s-world.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
-| YOLOv8s-worldv2 | [yolov8s-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
-| YOLOv8m-world   | [yolov8m-world.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8m-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
-| YOLOv8m-worldv2 | [yolov8m-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8m-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
-| YOLOv8l-world   | [yolov8l-world.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8l-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
-| YOLOv8l-worldv2 | [yolov8l-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8l-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
-| YOLOv8x-world   | [yolov8x-world.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
-| YOLOv8x-worldv2 | [yolov8x-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
+| YOLOv8s-world   | [yolov8s-world.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8s-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
+| YOLOv8s-worldv2 | [yolov8s-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8s-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
+| YOLOv8m-world   | [yolov8m-world.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8m-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
+| YOLOv8m-worldv2 | [yolov8m-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8m-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
+| YOLOv8l-world   | [yolov8l-world.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8l-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
+| YOLOv8l-worldv2 | [yolov8l-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8l-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
+| YOLOv8x-world   | [yolov8x-world.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8x-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
+| YOLOv8x-worldv2 | [yolov8x-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8x-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
 
 ## Zero-shot Transfer on COCO Dataset
 
-| Model Type      | mAP  | mAP50 | mAP75 |
-| --------------- | ---- | ----- | ----- |
-| yolov8s-world   | 37.4 | 52.0  | 40.6  |
-| yolov8s-worldv2 | 37.7 | 52.2  | 41.0  |
-| yolov8m-world   | 42.0 | 57.0  | 45.6  |
-| yolov8m-worldv2 | 43.0 | 58.4  | 46.8  |
-| yolov8l-world   | 45.7 | 61.3  | 49.8  |
-| yolov8l-worldv2 | 45.8 | 61.3  | 49.8  |
-| yolov8x-world   | 47.0 | 63.0  | 51.2  |
-| yolov8x-worldv2 | 47.1 | 62.8  | 51.4  |
+!!! tip "Performance"
+
+    === "Detection (COCO)"
+
+        | Model Type      | mAP  | mAP50 | mAP75 |
+        | --------------- | ---- | ----- | ----- |
+        | yolov8s-world   | 37.4 | 52.0  | 40.6  |
+        | yolov8s-worldv2 | 37.7 | 52.2  | 41.0  |
+        | yolov8m-world   | 42.0 | 57.0  | 45.6  |
+        | yolov8m-worldv2 | 43.0 | 58.4  | 46.8  |
+        | yolov8l-world   | 45.7 | 61.3  | 49.8  |
+        | yolov8l-worldv2 | 45.8 | 61.3  | 49.8  |
+        | yolov8x-world   | 47.0 | 63.0  | 51.2  |
+        | yolov8x-worldv2 | 47.1 | 62.8  | 51.4  |
 
 ## Usage Examples
 
-The YOLO-World models are easy to integrate into your Python applications. Ultralytics provides user-friendly Python API and CLI commands to streamline development.
+The YOLO-World models are easy to integrate into your Python applications. Ultralytics provides user-friendly [Python API](../usage/python.md) and [CLI commands](../usage/cli.md) to streamline development.
 
 ### Train Usage
 
-!!! Tip "Tip"
+!!! tip
 
     We strongly recommend to use `yolov8-worldv2` model for custom training, because it supports deterministic training and also easy to export other formats i.e onnx/tensorrt.
 
-Object detection is straightforward with the `train` method, as illustrated below:
+[Object detection](https://www.ultralytics.com/glossary/object-detection) is straightforward with the `train` method, as illustrated below:
 
-!!! Example
+!!! example
 
     === "Python"
 
-        PyTorch pretrained `*.pt` models as well as configuration `*.yaml` files can be passed to the `YOLOWorld()` class to create a model instance in python:
+        [PyTorch](https://www.ultralytics.com/glossary/pytorch) pretrained `*.pt` models as well as configuration `*.yaml` files can be passed to the `YOLOWorld()` class to create a model instance in python:
 
         ```python
         from ultralytics import YOLOWorld
@@ -113,7 +117,7 @@ Object detection is straightforward with the `train` method, as illustrated belo
 
 Object detection is straightforward with the `predict` method, as illustrated below:
 
-!!! Example
+!!! example
 
     === "Python"
 
@@ -143,7 +147,7 @@ This snippet demonstrates the simplicity of loading a pre-trained model and runn
 
 Model validation on a dataset is streamlined as follows:
 
-!!! Example
+!!! example
 
     === "Python"
 
@@ -166,9 +170,9 @@ Model validation on a dataset is streamlined as follows:
 
 ### Track Usage
 
-Object tracking with YOLO-World model on a video/images is streamlined as follows:
+[Object tracking](https://www.ultralytics.com/glossary/object-tracking) with YOLO-World model on a video/images is streamlined as follows:
 
-!!! Example
+!!! example
 
     === "Python"
 
@@ -186,22 +190,22 @@ Object tracking with YOLO-World model on a video/images is streamlined as follow
 
         ```bash
         # Track with a YOLO-World model on the video with a specified image size
-        yolo track model=yolov8s-world.pt imgsz=640 source="path/to/video/file.mp4"
+        yolo track model=yolov8s-world.pt imgsz=640 source="path/to/video.mp4"
         ```
 
-!!! Note
+!!! note
 
     The YOLO-World models provided by Ultralytics come pre-configured with [COCO dataset](../datasets/detect/coco.md) categories as part of their offline vocabulary, enhancing efficiency for immediate application. This integration allows the YOLOv8-World models to directly recognize and predict the 80 standard categories defined in the COCO dataset without requiring additional setup or customization.
 
 ### Set prompts
 
-![YOLO-World prompt class names overview](https://github.com/ultralytics/ultralytics/assets/26833433/4f609ec0-ae6d-4a85-a034-c1c1c30968ff)
+![YOLO-World prompt class names overview](https://github.com/ultralytics/docs/releases/download/0/yolo-world-prompt-class-names-overview.avif)
 
-The YOLO-World framework allows for the dynamic specification of classes through custom prompts, empowering users to tailor the model to their specific needs **without retraining**. This feature is particularly useful for adapting the model to new domains or specific tasks that were not originally part of the training data. By setting custom prompts, users can essentially guide the model's focus towards objects of interest, enhancing the relevance and accuracy of the detection results.
+The YOLO-World framework allows for the dynamic specification of classes through custom prompts, empowering users to tailor the model to their specific needs **without retraining**. This feature is particularly useful for adapting the model to new domains or specific tasks that were not originally part of the [training data](https://www.ultralytics.com/glossary/training-data). By setting custom prompts, users can essentially guide the model's focus towards objects of interest, enhancing the relevance and [accuracy](https://www.ultralytics.com/glossary/accuracy) of the detection results.
 
 For instance, if your application only requires detecting 'person' and 'bus' objects, you can specify these classes directly:
 
-!!! Example
+!!! example
 
     === "Custom Inference Prompts"
 
@@ -223,7 +227,7 @@ For instance, if your application only requires detecting 'person' and 'bus' obj
 
 You can also save a model after setting custom classes. By doing this you create a version of the YOLO-World model that is specialized for your specific use case. This process embeds your custom class definitions directly into the model file, making the model ready to use with your specified classes without further adjustments. Follow these steps to save and load your custom YOLOv8 model:
 
-!!! Example
+!!! example
 
     === "Persisting Models with Custom Vocabulary"
 
@@ -264,7 +268,7 @@ You can also save a model after setting custom classes. By doing this you create
 - **Simplicity**: Simplifies deployment by eliminating the need to repeatedly specify custom classes at runtime, making the model directly usable with its embedded vocabulary.
 - **Performance**: Enhances detection accuracy for specified classes by focusing the model's attention and resources on recognizing the defined objects.
 
-This approach provides a powerful means of customizing state-of-the-art object detection models for specific tasks, making advanced AI more accessible and applicable to a broader range of practical applications.
+This approach provides a powerful means of customizing state-of-the-art [object detection](../tasks/detect.md) models for specific tasks, making advanced AI more accessible and applicable to a broader range of practical applications.
 
 ## Reproduce official results from scratch(Experimental)
 
@@ -272,11 +276,11 @@ This approach provides a powerful means of customizing state-of-the-art object d
 
 - Train data
 
-| Dataset                                                           | Type      | Samples | Boxes | Annotation Files                                                                                                                           |
-| ----------------------------------------------------------------- | --------- | ------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Objects365v1](https://opendatalab.com/OpenDataLab/Objects365_v1) | Detection | 609k    | 9621k | [objects365_train.json](https://opendatalab.com/OpenDataLab/Objects365_v1)                                                                 |
-| [GQA](https://nlp.stanford.edu/data/gqa/images.zip)               | Grounding | 621k    | 3681k | [final_mixed_train_no_coco.json](https://huggingface.co/GLIPModel/GLIP/blob/main/mdetr_annotations/final_mixed_train_no_coco.json)         |
-| [Flickr30k](https://shannon.cs.illinois.edu/DenotationGraph/)     | Grounding | 149k    | 641k  | [final_flickr_separateGT_train.json](https://huggingface.co/GLIPModel/GLIP/blob/main/mdetr_annotations/final_flickr_separateGT_train.json) |
+| Dataset                                                           | Type                                                        | Samples | Boxes | Annotation Files                                                                                                                           |
+| ----------------------------------------------------------------- | ----------------------------------------------------------- | ------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Objects365v1](https://opendatalab.com/OpenDataLab/Objects365_v1) | Detection                                                   | 609k    | 9621k | [objects365_train.json](https://opendatalab.com/OpenDataLab/Objects365_v1)                                                                 |
+| [GQA](https://cs.stanford.edu/people/dorarad/gqa/about.html)      | [Grounding](https://www.ultralytics.com/glossary/grounding) | 621k    | 3681k | [final_mixed_train_no_coco.json](https://huggingface.co/GLIPModel/GLIP/blob/main/mdetr_annotations/final_mixed_train_no_coco.json)         |
+| [Flickr30k](https://shannon.cs.illinois.edu/DenotationGraph/)     | Grounding                                                   | 149k    | 641k  | [final_flickr_separateGT_train.json](https://huggingface.co/GLIPModel/GLIP/blob/main/mdetr_annotations/final_flickr_separateGT_train.json) |
 
 - Val data
 
@@ -286,11 +290,11 @@ This approach provides a powerful means of customizing state-of-the-art object d
 
 ### Launch training from scratch
 
-!!! Note
+!!! note
 
     `WorldTrainerFromScratch` is highly customized to allow training yolo-world models on both detection datasets and grounding datasets simultaneously. More details please checkout [ultralytics.model.yolo.world.train_world.py](https://github.com/ultralytics/ultralytics/blob/main/ultralytics/models/yolo/world/train_world.py).
 
-!!! Example
+!!! example
 
     === "Python"
 
@@ -303,12 +307,12 @@ This approach provides a powerful means of customizing state-of-the-art object d
                 yolo_data=["Objects365.yaml"],
                 grounding_data=[
                     dict(
-                        img_path="../datasets/flickr30k/images",
-                        json_file="../datasets/flickr30k/final_flickr_separateGT_train.json",
+                        img_path="flickr30k/images",
+                        json_file="flickr30k/final_flickr_separateGT_train.json",
                     ),
                     dict(
-                        img_path="../datasets/GQA/images",
-                        json_file="../datasets/GQA/final_mixed_train_no_coco.json",
+                        img_path="GQA/images",
+                        json_file="GQA/final_mixed_train_no_coco.json",
                     ),
                 ],
             ),
@@ -320,9 +324,9 @@ This approach provides a powerful means of customizing state-of-the-art object d
 
 ## Citations and Acknowledgements
 
-We extend our gratitude to the [Tencent AILab Computer Vision Center](https://ai.tencent.com/) for their pioneering work in real-time open-vocabulary object detection with YOLO-World:
+We extend our gratitude to the [Tencent AILab Computer Vision Center](https://www.tencent.com/) for their pioneering work in real-time open-vocabulary object detection with YOLO-World:
 
-!!! Quote ""
+!!! quote ""
 
     === "BibTeX"
 
@@ -335,7 +339,7 @@ We extend our gratitude to the [Tencent AILab Computer Vision Center](https://ai
         }
         ```
 
-For further reading, the original YOLO-World paper is available on [arXiv](https://arxiv.org/pdf/2401.17270v2.pdf). The project's source code and additional resources can be accessed via their [GitHub repository](https://github.com/AILab-CVC/YOLO-World). We appreciate their commitment to advancing the field and sharing their valuable insights with the community.
+For further reading, the original YOLO-World paper is available on [arXiv](https://arxiv.org/pdf/2401.17270v2). The project's source code and additional resources can be accessed via their [GitHub repository](https://github.com/AILab-CVC/YOLO-World). We appreciate their commitment to advancing the field and sharing their valuable insights with the community.
 
 ## FAQ
 
@@ -345,7 +349,7 @@ The YOLO-World model is an advanced, real-time object detection approach based o
 
 ### How does YOLO-World handle inference with custom prompts?
 
-YOLO-World supports a "prompt-then-detect" strategy, which utilizes an offline vocabulary to enhance efficiency. Custom prompts like captions or specific object categories are pre-encoded and stored as offline vocabulary embeddings. This approach streamlines the detection process without the need for retraining. You can dynamically set these prompts within the model to tailor it to specific detection tasks, as shown below:
+YOLO-World supports a "prompt-then-detect" strategy, which utilizes an offline vocabulary to enhance efficiency. Custom prompts like captions or specific object categories are pre-encoded and stored as offline vocabulary [embeddings](https://www.ultralytics.com/glossary/embeddings). This approach streamlines the detection process without the need for retraining. You can dynamically set these prompts within the model to tailor it to specific detection tasks, as shown below:
 
 ```python
 from ultralytics import YOLOWorld
@@ -398,14 +402,14 @@ Ultralytics offers multiple pre-trained YOLO-World models supporting various tas
 
 | Model Type      | Pre-trained Weights                                                                                     | Tasks Supported                        | Inference | Validation | Training | Export |
 | --------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------- | --------- | ---------- | -------- | ------ |
-| YOLOv8s-world   | [yolov8s-world.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
-| YOLOv8s-worldv2 | [yolov8s-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
-| YOLOv8m-world   | [yolov8m-world.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8m-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
-| YOLOv8m-worldv2 | [yolov8m-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8m-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
-| YOLOv8l-world   | [yolov8l-world.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8l-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
-| YOLOv8l-worldv2 | [yolov8l-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8l-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
-| YOLOv8x-world   | [yolov8x-world.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
-| YOLOv8x-worldv2 | [yolov8x-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
+| YOLOv8s-world   | [yolov8s-world.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8s-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
+| YOLOv8s-worldv2 | [yolov8s-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8s-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
+| YOLOv8m-world   | [yolov8m-world.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8m-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
+| YOLOv8m-worldv2 | [yolov8m-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8m-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
+| YOLOv8l-world   | [yolov8l-world.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8l-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
+| YOLOv8l-worldv2 | [yolov8l-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8l-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
+| YOLOv8x-world   | [yolov8x-world.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8x-world.pt)     | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ❌     |
+| YOLOv8x-worldv2 | [yolov8x-worldv2.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8x-worldv2.pt) | [Object Detection](../tasks/detect.md) | ✅        | ✅         | ✅       | ✅     |
 
 ### How do I reproduce the official results of YOLO-World from scratch?
 
@@ -420,12 +424,12 @@ data = {
         "yolo_data": ["Objects365.yaml"],
         "grounding_data": [
             {
-                "img_path": "../datasets/flickr30k/images",
-                "json_file": "../datasets/flickr30k/final_flickr_separateGT_train.json",
+                "img_path": "flickr30k/images",
+                "json_file": "flickr30k/final_flickr_separateGT_train.json",
             },
             {
-                "img_path": "../datasets/GQA/images",
-                "json_file": "../datasets/GQA/final_mixed_train_no_coco.json",
+                "img_path": "GQA/images",
+                "json_file": "GQA/final_mixed_train_no_coco.json",
             },
         ],
     },

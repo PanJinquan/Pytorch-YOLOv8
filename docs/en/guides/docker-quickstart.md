@@ -7,10 +7,10 @@ keywords: Ultralytics, Docker, Quickstart Guide, CPU support, GPU support, NVIDI
 # Docker Quickstart Guide for Ultralytics
 
 <p align="center">
-  <img width="800" src="https://user-images.githubusercontent.com/26833433/270173601-fc7011bd-e67c-452f-a31a-aa047dcd2771.png" alt="Ultralytics Docker Package Visual">
+  <img width="800" src="https://github.com/ultralytics/docs/releases/download/0/ultralytics-docker-package-visual.avif" alt="Ultralytics Docker Package Visual">
 </p>
 
-This guide serves as a comprehensive introduction to setting up a Docker environment for your Ultralytics projects. [Docker](https://docker.com/) is a platform for developing, shipping, and running applications in containers. It is particularly beneficial for ensuring that the software will always run the same, regardless of where it's deployed. For more details, visit the Ultralytics Docker repository on [Docker Hub](https://hub.docker.com/r/ultralytics/ultralytics).
+This guide serves as a comprehensive introduction to setting up a Docker environment for your Ultralytics projects. [Docker](https://www.docker.com/) is a platform for developing, shipping, and running applications in containers. It is particularly beneficial for ensuring that the software will always run the same, regardless of where it's deployed. For more details, visit the Ultralytics Docker repository on [Docker Hub](https://hub.docker.com/r/ultralytics/ultralytics).
 
 [![Docker Image Version](https://img.shields.io/docker/v/ultralytics/ultralytics?sort=semver&logo=docker)](https://hub.docker.com/r/ultralytics/ultralytics)
 [![Docker Pulls](https://img.shields.io/docker/pulls/ultralytics/ultralytics)](https://hub.docker.com/r/ultralytics/ultralytics)
@@ -23,11 +23,22 @@ This guide serves as a comprehensive introduction to setting up a Docker environ
 - Using a Display Server with Docker to Show Ultralytics Detection Results
 - Mounting local directories into the container
 
+<p align="center">
+  <br>
+  <iframe loading="lazy" width="720" height="405" src="https://www.youtube.com/embed/IYWQZvtOy_Q"
+    title="YouTube video player" frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+  </iframe>
+  <br>
+  <strong>Watch:</strong> How to Get started with Docker | Usage of Ultralytics Python Package inside Docker live demo 🎉
+</p>
+
 ---
 
 ## Prerequisites
 
-- Make sure Docker is installed on your system. If not, you can download and install it from [Docker's website](https://www.docker.com/products/docker-desktop).
+- Make sure Docker is installed on your system. If not, you can download and install it from [Docker's website](https://www.docker.com/products/docker-desktop/).
 - Ensure that your system has an NVIDIA GPU and NVIDIA drivers are installed.
 
 ---
@@ -75,9 +86,12 @@ Ultralytics offers several Docker images optimized for various platforms and use
 - **Dockerfile:** GPU image, ideal for training.
 - **Dockerfile-arm64:** For ARM64 architecture, suitable for devices like [Raspberry Pi](raspberry-pi.md).
 - **Dockerfile-cpu:** CPU-only version for inference and non-GPU environments.
-- **Dockerfile-jetson:** Optimized for NVIDIA Jetson devices.
+- **Dockerfile-jetson-jetpack4:** Optimized for [NVIDIA Jetson](https://docs.ultralytics.com/guides/nvidia-jetson/) devices running [NVIDIA JetPack 4](https://developer.nvidia.com/embedded/jetpack-sdk-461).
+- **Dockerfile-jetson-jetpack5:** Optimized for [NVIDIA Jetson](https://docs.ultralytics.com/guides/nvidia-jetson/) devices running [NVIDIA JetPack 5](https://developer.nvidia.com/embedded/jetpack-sdk-512).
+- **Dockerfile-jetson-jetpack6:** Optimized for [NVIDIA Jetson](https://docs.ultralytics.com/guides/nvidia-jetson/) devices running [NVIDIA JetPack 6](https://developer.nvidia.com/embedded/jetpack-sdk-61).
+- **Dockerfile-jupyter:** For interactive development using JupyterLab in the browser.
 - **Dockerfile-python:** Minimal Python environment for lightweight applications.
-- **Dockerfile-conda:** Includes [Miniconda3](https://docs.conda.io/projects/miniconda/en/latest/) and Ultralytics package installed via Conda.
+- **Dockerfile-conda:** Includes [Miniconda3](https://www.anaconda.com/docs/main) and Ultralytics package installed via Conda.
 
 To pull the latest image:
 
@@ -98,30 +112,7 @@ Here's how to execute the Ultralytics Docker container:
 ### Using only the CPU
 
 ```bash
-# Run with all GPUs
-sudo docker run -it --ipc=host $t
-```
-
-### Using GPUs
-
-```bash
-# Run with all GPUs
-sudo docker run -it --ipc=host --gpus all $t
-
-# Run specifying which GPUs to use
-sudo docker run -it --ipc=host --gpus '"device=2,3"' $t
-```
-
-The `-it` flag assigns a pseudo-TTY and keeps stdin open, allowing you to interact with the container. The `--ipc=host` flag enables sharing of host's IPC namespace, essential for sharing memory between processes. The `--gpus` flag allows the container to access the host's GPUs.
-
-## Running Ultralytics in Docker Container
-
-Here's how to execute the Ultralytics Docker container:
-
-### Using only the CPU
-
-```bash
-# Run with all GPUs
+# Run without GPU
 sudo docker run -it --ipc=host $t
 ```
 
@@ -154,7 +145,7 @@ Replace `/path/on/host` with the directory path on your local machine and `/path
 
     The following instructions are experimental. Sharing a X11 socket with a Docker container poses potential security risks. Therefore, it's recommended to test this solution only in a controlled environment. For more information, refer to these resources on how to use `xhost`<sup>[(1)](http://users.stat.umn.edu/~geyer/secure.html)[(2)](https://linux.die.net/man/1/xhost)</sup>.
 
-Docker is primarily used to containerize background applications and CLI programs, but it can also run graphical programs. In the Linux world, two main graphic servers handle graphical display: [X11](https://www.x.org/wiki/) (also known as the X Window System) and [Wayland](https://wayland.freedesktop.org/). Before starting, it's essential to determine which graphics server you are currently using. Run this command to find out:
+Docker is primarily used to containerize background applications and CLI programs, but it can also run graphical programs. In the Linux world, two main graphic servers handle graphical display: [X11](https://www.x.org/wiki/) (also known as the X Window System) and [Wayland](<https://en.wikipedia.org/wiki/Wayland_(protocol)>). Before starting, it's essential to determine which graphics server you are currently using. Run this command to find out:
 
 ```bash
 env | grep -E -i 'x11|xorg|wayland'
@@ -175,9 +166,9 @@ Setup and configuration of an X11 or Wayland display server is outside the scope
 
         ```bash
         xhost +local:docker && docker run -e DISPLAY=$DISPLAY \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
-        -v ~/.Xauthority:/root/.Xauthority \
-        -it --ipc=host $t
+          -v /tmp/.X11-unix:/tmp/.X11-unix \
+          -v ~/.Xauthority:/root/.Xauthority \
+          -it --ipc=host $t
         ```
 
         This command sets the `DISPLAY` environment variable to the host's display, mounts the X11 socket, and maps the `.Xauthority` file to the container. The `xhost +local:docker` command allows the Docker container to access the X11 server.
@@ -189,18 +180,18 @@ Setup and configuration of an X11 or Wayland display server is outside the scope
 
         ```bash
         xhost +local:docker && docker run -e DISPLAY=$DISPLAY \
-        -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY \
-        --net=host -it --ipc=host $t
+          -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY \
+          --net=host -it --ipc=host $t
         ```
 
         This command sets the `DISPLAY` environment variable to the host's display, mounts the Wayland socket, and allows the Docker container to access the Wayland server.
 
 ### Using Docker with a GUI
 
-Now you can display graphical applications inside your Docker container. For example, you can run the following [CLI command](../usage/cli.md) to visualize the [predictions](../modes/predict.md) from a [YOLOv8 model](../models/yolov8.md):
+Now you can display graphical applications inside your Docker container. For example, you can run the following [CLI command](../usage/cli.md) to visualize the [predictions](../modes/predict.md) from a [YOLO11 model](../models/yolo11.md):
 
 ```bash
-yolo predict model=yolov8n.pt show=True
+yolo predict model=yolo11n.pt show=True
 ```
 
 ??? info "Testing"
@@ -235,11 +226,11 @@ To set up Ultralytics with Docker, first ensure that Docker is installed on your
 sudo docker pull ultralytics/ultralytics:latest
 ```
 
-For detailed steps, refer to our [Docker Quickstart Guide](../quickstart.md).
+For detailed steps, refer to our Docker Quickstart Guide.
 
 ### What are the benefits of using Ultralytics Docker images for machine learning projects?
 
-Using Ultralytics Docker images ensures a consistent environment across different machines, replicating the same software and dependencies. This is particularly useful for collaborating across teams, running models on various hardware, and maintaining reproducibility. For GPU-based training, Ultralytics provides optimized Docker images such as `Dockerfile` for general GPU usage and `Dockerfile-jetson` for NVIDIA Jetson devices. Explore [Ultralytics Docker Hub](https://hub.docker.com/r/ultralytics/ultralytics) for more details.
+Using Ultralytics Docker images ensures a consistent environment across different machines, replicating the same software and dependencies. This is particularly useful for [collaborating across teams](https://www.ultralytics.com/blog/how-ultralytics-integration-can-enhance-your-workflow), running models on various hardware, and maintaining reproducibility. For GPU-based training, Ultralytics provides optimized Docker images such as `Dockerfile` for general GPU usage and `Dockerfile-jetson` for NVIDIA Jetson devices. Explore [Ultralytics Docker Hub](https://hub.docker.com/r/ultralytics/ultralytics) for more details.
 
 ### How can I run Ultralytics YOLO in a Docker container with GPU support?
 
@@ -249,7 +240,7 @@ First, ensure that the NVIDIA Docker runtime is installed and configured. Then, 
 sudo docker run -it --ipc=host --gpus all ultralytics/ultralytics:latest
 ```
 
-This command sets up a Docker container with GPU access. For additional details, see the [Docker Quickstart Guide](../quickstart.md).
+This command sets up a Docker container with GPU access. For additional details, see the Docker Quickstart Guide.
 
 ### How do I visualize YOLO prediction results in a Docker container with a display server?
 
@@ -257,17 +248,17 @@ To visualize YOLO prediction results with a GUI in a Docker container, you need 
 
 ```bash
 xhost +local:docker && docker run -e DISPLAY=$DISPLAY \
--v /tmp/.X11-unix:/tmp/.X11-unix \
--v ~/.Xauthority:/root/.Xauthority \
--it --ipc=host ultralytics/ultralytics:latest
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v ~/.Xauthority:/root/.Xauthority \
+  -it --ipc=host ultralytics/ultralytics:latest
 ```
 
 For systems running Wayland, use:
 
 ```bash
 xhost +local:docker && docker run -e DISPLAY=$DISPLAY \
--v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY \
---net=host -it --ipc=host ultralytics/ultralytics:latest
+  -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY \
+  --net=host -it --ipc=host ultralytics/ultralytics:latest
 ```
 
 More information can be found in the [Run graphical user interface (GUI) applications in a Docker Container](#run-graphical-user-interface-gui-applications-in-a-docker-container) section.
@@ -280,4 +271,4 @@ Yes, you can mount local directories into the Ultralytics Docker container using
 sudo docker run -it --ipc=host --gpus all -v /path/on/host:/path/in/container ultralytics/ultralytics:latest
 ```
 
-Replace `/path/on/host` with the directory on your local machine and `/path/in/container` with the desired path inside the container. This setup allows you to work with your local files within the container. For more information, refer to the relevant section on [mounting local directories](../usage/python.md).
+Replace `/path/on/host` with the directory on your local machine and `/path/in/container` with the desired path inside the container. This setup allows you to work with your local files within the container. For more information, refer to the [Note on File Accessibility](#note-on-file-accessibility) section.

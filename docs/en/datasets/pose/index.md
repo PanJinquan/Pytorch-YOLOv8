@@ -31,29 +31,17 @@ Format with Dim = 2
 Format with Dim = 3
 
 ```
-<class-index> <x> <y> <width> <height> <px1> <py1> <p1-visibility> <px2> <py2> <p2-visibility> <pxn> <pyn> <p2-visibility>
+<class-index> <x> <y> <width> <height> <px1> <py1> <p1-visibility> <px2> <py2> <p2-visibility> <pxn> <pyn> <pn-visibility>
 ```
 
-In this format, `<class-index>` is the index of the class for the object,`<x> <y> <width> <height>` are coordinates of bounding box, and `<px1> <py1> <px2> <py2> ... <pxn> <pyn>` are the pixel coordinates of the keypoints. The coordinates are separated by spaces.
+In this format, `<class-index>` is the index of the class for the object,`<x> <y> <width> <height>` are coordinates of [bounding box](https://www.ultralytics.com/glossary/bounding-box), and `<px1> <py1> <px2> <py2> ... <pxn> <pyn>` are the pixel coordinates of the keypoints. The coordinates are separated by spaces.
 
 ### Dataset YAML format
 
-The Ultralytics framework uses a YAML file format to define the dataset and model configuration for training Detection Models. Here is an example of the YAML format used for defining a detection dataset:
+The Ultralytics framework uses a YAML file format to define the dataset and model configuration for training pose estimation models. Here is an example of the YAML format used for defining a pose dataset:
 
 ```yaml
-# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
-path: ../datasets/coco8-pose  # dataset root dir
-train: images/train  # train images (relative to 'path') 4 images
-val: images/val  # val images (relative to 'path') 4 images
-test:  # test images (optional)
-
-# Keypoints
-kpt_shape: [17, 3]  # number of keypoints, number of dims (2 for x,y or 3 for x,y,visible)
-flip_idx: [0, 2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16, 15]
-
-# Classes dictionary
-names:
-  0: person
+--8<-- "ultralytics/cfg/datasets/coco8-pose.yaml"
 ```
 
 The `train` and `val` fields specify the paths to the directories containing the training and validation images, respectively.
@@ -64,7 +52,7 @@ The `train` and `val` fields specify the paths to the directories containing the
 
 ## Usage
 
-!!! Example
+!!! example
 
     === "Python"
 
@@ -72,7 +60,7 @@ The `train` and `val` fields specify the paths to the directories containing the
         from ultralytics import YOLO
 
         # Load a model
-        model = YOLO("yolov8n-pose.pt")  # load a pretrained model (recommended for training)
+        model = YOLO("yolo11n-pose.pt")  # load a pretrained model (recommended for training)
 
         # Train the model
         results = model.train(data="coco8-pose.yaml", epochs=100, imgsz=640)
@@ -82,16 +70,16 @@ The `train` and `val` fields specify the paths to the directories containing the
 
         ```bash
         # Start training from a pretrained *.pt model
-        yolo pose train data=coco8-pose.yaml model=yolov8n-pose.pt epochs=100 imgsz=640
+        yolo pose train data=coco8-pose.yaml model=yolo11n-pose.pt epochs=100 imgsz=640
         ```
 
 ## Supported Datasets
 
-This section outlines the datasets that are compatible with Ultralytics YOLO format and can be used for training pose estimation models:
+This section outlines the datasets that are compatible with Ultralytics YOLO format and can be used for training [pose estimation](https://docs.ultralytics.com/tasks/pose/) models:
 
 ### COCO-Pose
 
-- **Description**: COCO-Pose is a large-scale object detection, segmentation, and pose estimation dataset. It is a subset of the popular COCO dataset and focuses on human pose estimation. COCO-Pose includes multiple keypoints for each human instance.
+- **Description**: COCO-Pose is a large-scale [object detection](https://www.ultralytics.com/glossary/object-detection), segmentation, and pose estimation dataset. It is a subset of the popular COCO dataset and focuses on human pose estimation. COCO-Pose includes multiple keypoints for each human instance.
 - **Label Format**: Same as Ultralytics YOLO format as described above, with keypoints for human poses.
 - **Number of Classes**: 1 (Human).
 - **Keypoints**: 17 keypoints including nose, eyes, ears, shoulders, elbows, wrists, hips, knees, and ankles.
@@ -101,22 +89,40 @@ This section outlines the datasets that are compatible with Ultralytics YOLO for
 
 ### COCO8-Pose
 
-- **Description**: [Ultralytics](https://ultralytics.com) COCO8-Pose is a small, but versatile pose detection dataset composed of the first 8 images of the COCO train 2017 set, 4 for training and 4 for validation.
+- **Description**: [Ultralytics](https://www.ultralytics.com/) COCO8-Pose is a small, but versatile pose detection dataset composed of the first 8 images of the COCO train 2017 set, 4 for training and 4 for validation.
 - **Label Format**: Same as Ultralytics YOLO format as described above, with keypoints for human poses.
 - **Number of Classes**: 1 (Human).
 - **Keypoints**: 17 keypoints including nose, eyes, ears, shoulders, elbows, wrists, hips, knees, and ankles.
 - **Usage**: Suitable for testing and debugging object detection models, or for experimenting with new detection approaches.
-- **Additional Notes**: COCO8-Pose is ideal for sanity checks and CI checks.
+- **Additional Notes**: COCO8-Pose is ideal for sanity checks and [CI checks](https://docs.ultralytics.com/help/CI/).
 - [Read more about COCO8-Pose](coco8-pose.md)
 
 ### Tiger-Pose
 
-- **Description**: [Ultralytics](https://ultralytics.com) This animal pose dataset comprises 263 images sourced from a [YouTube Video](https://www.youtube.com/watch?v=MIBAT6BGE6U&pp=ygUbVGlnZXIgd2Fsa2luZyByZWZlcmVuY2UubXA0), with 210 images allocated for training and 53 for validation.
+- **Description**: [Ultralytics](https://www.ultralytics.com/) The Tiger Pose dataset comprises 263 images sourced from a [YouTube Video](https://www.youtube.com/watch?v=MIBAT6BGE6U&pp=ygUbVGlnZXIgd2Fsa2luZyByZWZlcmVuY2UubXA0), with 210 images allocated for training and 53 for validation.
 - **Label Format**: Same as Ultralytics YOLO format as described above, with 12 keypoints for animal pose and no visible dimension.
 - **Number of Classes**: 1 (Tiger).
 - **Keypoints**: 12 keypoints.
 - **Usage**: Great for animal pose or any other pose that is not human-based.
 - [Read more about Tiger-Pose](tiger-pose.md)
+
+### Hand Keypoints
+
+- **Description**: Hand keypoints pose dataset comprises nearly 26K images, with 18776 images allocated for training and 7992 for validation.
+- **Label Format**: Same as Ultralytics YOLO format as described above, but with 21 keypoints for human hand and visible dimension.
+- **Number of Classes**: 1 (Hand).
+- **Keypoints**: 21 keypoints.
+- **Usage**: Great for human hand pose estimation and [gesture recognition](https://www.ultralytics.com/blog/enhancing-hand-keypoints-estimation-with-ultralytics-yolo11).
+- [Read more about Hand Keypoints](hand-keypoints.md)
+
+### Dog-Pose
+
+- **Description**: The Dog Pose dataset contains approximately 6,000 images, providing a diverse and extensive resource for training and validation of dog pose estimation models.
+- **Label Format**: Follows the Ultralytics YOLO format, with annotations for multiple keypoints specific to dog anatomy.
+- **Number of Classes**: 1 (Dog).
+- **Keypoints**: Includes 24 keypoints tailored to dog poses, such as limbs, joints, and head positions.
+- **Usage**: Ideal for training models to estimate dog poses in various scenarios, from research to [real-world applications](https://www.ultralytics.com/blog/custom-training-ultralytics-yolo11-for-dog-pose-estimation).
+- [Read more about Dog-Pose](dog-pose.md)
 
 ### Adding your own dataset
 
@@ -124,9 +130,9 @@ If you have your own dataset and would like to use it for training pose estimati
 
 ### Conversion Tool
 
-Ultralytics provides a convenient conversion tool to convert labels from the popular COCO dataset format to YOLO format:
+Ultralytics provides a convenient conversion tool to convert labels from the popular [COCO dataset](https://docs.ultralytics.com/datasets/detect/coco/) format to YOLO format:
 
-!!! Example
+!!! example
 
     === "Python"
 
@@ -142,7 +148,7 @@ This conversion tool can be used to convert the COCO dataset or any dataset in t
 
 ### What is the Ultralytics YOLO format for pose estimation?
 
-The Ultralytics YOLO format for pose estimation datasets involves labeling each image with a corresponding text file. Each row of the text file stores information about an object instance: 
+The Ultralytics YOLO format for pose estimation datasets involves labeling each image with a corresponding text file. Each row of the text file stores information about an object instance:
 
 - Object class index
 - Object center coordinates (normalized x and y)
@@ -153,7 +159,8 @@ For 2D poses, keypoints include pixel coordinates. For 3D, each keypoint also ha
 
 ### How do I use the COCO-Pose dataset with Ultralytics YOLO?
 
-To use the COCO-Pose dataset with Ultralytics YOLO:
+To use the [COCO-Pose dataset](https://docs.ultralytics.com/datasets/pose/coco/) with Ultralytics YOLO:
+
 1. Download the dataset and prepare your label files in the YOLO format.
 2. Create a YAML configuration file specifying paths to training and validation images, keypoint shape, and class names.
 3. Use the configuration file for training:
@@ -161,15 +168,16 @@ To use the COCO-Pose dataset with Ultralytics YOLO:
     ```python
     from ultralytics import YOLO
 
-    model = YOLO("yolov8n-pose.pt")  # load pretrained model
+    model = YOLO("yolo11n-pose.pt")  # load pretrained model
     results = model.train(data="coco-pose.yaml", epochs=100, imgsz=640)
     ```
-    
+
     For more information, visit [COCO-Pose](coco.md) and [train](../../modes/train.md) sections.
 
 ### How can I add my own dataset for pose estimation in Ultralytics YOLO?
 
 To add your dataset:
+
 1. Convert your annotations to the Ultralytics YOLO format.
 2. Create a YAML configuration file specifying the dataset paths, number of classes, and class names.
 3. Use the configuration file to train your model:
@@ -177,22 +185,18 @@ To add your dataset:
     ```python
     from ultralytics import YOLO
 
-    model = YOLO("yolov8n-pose.pt")
+    model = YOLO("yolo11n-pose.pt")
     results = model.train(data="your-dataset.yaml", epochs=100, imgsz=640)
     ```
-    
+
     For complete steps, check the [Adding your own dataset](#adding-your-own-dataset) section.
 
 ### What is the purpose of the dataset YAML file in Ultralytics YOLO?
 
-The dataset YAML file in Ultralytics YOLO defines the dataset and model configuration for training. It specifies paths to training, validation, and test images, keypoint shapes, class names, and other configuration options. This structured format helps streamline dataset management and model training. Here is an example YAML format:
+The dataset YAML file in Ultralytics YOLO defines the dataset and model configuration for training. It specifies paths to training, validation, and test images, keypoint shapes, class names, and other configuration options. This structured format helps streamline [dataset management](https://docs.ultralytics.com/datasets/explorer/) and model training. Here is an example YAML format:
 
 ```yaml
-path: ../datasets/coco8-pose
-train: images/train
-val: images/val
-names:
-  0: person
+--8<-- "ultralytics/cfg/datasets/coco8-pose.yaml"
 ```
 
 Read more about creating YAML configuration files in [Dataset YAML format](#dataset-yaml-format).
@@ -207,4 +211,4 @@ from ultralytics.data.converter import convert_coco
 convert_coco(labels_dir="path/to/coco/annotations/", use_keypoints=True)
 ```
 
-This tool helps seamlessly integrate COCO datasets into YOLO projects. For details, refer to the [Conversion Tool](#conversion-tool) section.
+This tool helps seamlessly integrate COCO datasets into YOLO projects. For details, refer to the [Conversion Tool](#conversion-tool) section and the [data preprocessing guide](https://docs.ultralytics.com/guides/preprocessing_annotated_data/).

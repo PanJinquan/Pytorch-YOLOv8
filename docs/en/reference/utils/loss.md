@@ -5,7 +5,7 @@ keywords: Ultralytics, loss functions, Varifocal Loss, Focal Loss, Bbox Loss, Ro
 
 # Reference for `ultralytics/utils/loss.py`
 
-!!! Note
+!!! note
 
     This file is available at [https://github.com/ultralytics/ultralytics/blob/main/ultralytics/utils/loss.py](https://github.com/ultralytics/ultralytics/blob/main/ultralytics/utils/loss.py). If you spot a problem please help fix it by [contributing](https://docs.ultralytics.com/help/contributing/) a [Pull Request](https://github.com/ultralytics/ultralytics/edit/main/ultralytics/utils/loss.py) 🛠️. Thank you 🙏!
 
@@ -56,5 +56,13 @@ keywords: Ultralytics, loss functions, Varifocal Loss, Focal Loss, Bbox Loss, Ro
 <br><br><hr><br>
 
 ## ::: ultralytics.utils.loss.E2EDetectLoss
+
+<br><br><hr><br>
+
+## ::: ultralytics.utils.loss.TVPDetectLoss
+
+<br><br><hr><br>
+
+## ::: ultralytics.utils.loss.TVPSegmentLoss
 
 <br><br>

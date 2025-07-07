@@ -5,7 +5,7 @@ keywords: Ultralytics, YOLO, utility functions, version checks, requirements, im
 
 # Reference for `ultralytics/utils/checks.py`
 
-!!! Note
+!!! note
 
     This file is available at [https://github.com/ultralytics/ultralytics/blob/main/ultralytics/utils/checks.py](https://github.com/ultralytics/ultralytics/blob/main/ultralytics/utils/checks.py). If you spot a problem please help fix it by [contributing](https://docs.ultralytics.com/help/contributing/) a [Pull Request](https://github.com/ultralytics/ultralytics/edit/main/ultralytics/utils/checks.py) 🛠️. Thank you 🙏!
 
@@ -24,6 +24,10 @@ keywords: Ultralytics, YOLO, utility functions, version checks, requirements, im
 <br><br><hr><br>
 
 ## ::: ultralytics.utils.checks.check_imgsz
+
+<br><br><hr><br>
+
+## ::: ultralytics.utils.checks.check_uv
 
 <br><br><hr><br>
 
@@ -108,5 +112,17 @@ keywords: Ultralytics, YOLO, utility functions, version checks, requirements, im
 <br><br><hr><br>
 
 ## ::: ultralytics.utils.checks.cuda_is_available
+
+<br><br><hr><br>
+
+## ::: ultralytics.utils.checks.is_rockchip
+
+<br><br><hr><br>
+
+## ::: ultralytics.utils.checks.is_intel
+
+<br><br><hr><br>
+
+## ::: ultralytics.utils.checks.is_sudo_available
 
 <br><br>

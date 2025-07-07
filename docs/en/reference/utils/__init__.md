@@ -5,13 +5,17 @@ keywords: Ultralytics, utils, TQDM, Python, ML, Machine Learning utilities, YOLO
 
 # Reference for `ultralytics/utils/__init__.py`
 
-!!! Note
+!!! note
 
     This file is available at [https://github.com/ultralytics/ultralytics/blob/main/ultralytics/utils/\_\_init\_\_.py](https://github.com/ultralytics/ultralytics/blob/main/ultralytics/utils/__init__.py). If you spot a problem please help fix it by [contributing](https://docs.ultralytics.com/help/contributing/) a [Pull Request](https://github.com/ultralytics/ultralytics/edit/main/ultralytics/utils/__init__.py) 🛠️. Thank you 🙏!
 
 <br>
 
 ## ::: ultralytics.utils.TQDM
+
+<br><br><hr><br>
+
+## ::: ultralytics.utils.DataExportMixin
 
 <br><br><hr><br>
 
@@ -27,11 +31,19 @@ keywords: Ultralytics, utils, TQDM, Python, ML, Machine Learning utilities, YOLO
 
 <br><br><hr><br>
 
+## ::: ultralytics.utils.YAML
+
+<br><br><hr><br>
+
 ## ::: ultralytics.utils.TryExcept
 
 <br><br><hr><br>
 
 ## ::: ultralytics.utils.Retry
+
+<br><br><hr><br>
+
+## ::: ultralytics.utils.JSONDict
 
 <br><br><hr><br>
 
@@ -48,18 +60,6 @@ keywords: Ultralytics, utils, TQDM, Python, ML, Machine Learning utilities, YOLO
 <br><br><hr><br>
 
 ## ::: ultralytics.utils.emojis
-
-<br><br><hr><br>
-
-## ::: ultralytics.utils.yaml_save
-
-<br><br><hr><br>
-
-## ::: ultralytics.utils.yaml_load
-
-<br><br><hr><br>
-
-## ::: ultralytics.utils.yaml_print
 
 <br><br><hr><br>
 
@@ -80,6 +80,10 @@ keywords: Ultralytics, utils, TQDM, Python, ML, Machine Learning utilities, YOLO
 <br><br><hr><br>
 
 ## ::: ultralytics.utils.is_jupyter
+
+<br><br><hr><br>
+
+## ::: ultralytics.utils.is_runpod
 
 <br><br><hr><br>
 
@@ -168,5 +172,9 @@ keywords: Ultralytics, utils, TQDM, Python, ML, Machine Learning utilities, YOLO
 <br><br><hr><br>
 
 ## ::: ultralytics.utils.url2file
+
+<br><br><hr><br>
+
+## ::: ultralytics.utils.vscode_msg
 
 <br><br>

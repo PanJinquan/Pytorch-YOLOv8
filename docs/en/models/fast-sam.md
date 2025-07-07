@@ -21,11 +21,11 @@ The Fast Segment Anything Model (FastSAM) is a novel, real-time CNN-based soluti
 
 ## Model Architecture
 
-![Fast Segment Anything Model (FastSAM) architecture overview](https://user-images.githubusercontent.com/26833433/248551984-d98f0f6d-7535-45d0-b380-2e1440b52ad7.jpg)
+![Fast Segment Anything Model (FastSAM) architecture overview](https://github.com/ultralytics/docs/releases/download/0/fastsam-architecture-overview.avif)
 
 ## Overview
 
-FastSAM is designed to address the limitations of the [Segment Anything Model (SAM)](sam.md), a heavy Transformer model with substantial computational resource requirements. The FastSAM decouples the segment anything task into two sequential stages: all-instance segmentation and prompt-guided selection. The first stage uses [YOLOv8-seg](../tasks/segment.md) to produce the segmentation masks of all instances in the image. In the second stage, it outputs the region-of-interest corresponding to the prompt.
+FastSAM is designed to address the limitations of the [Segment Anything Model (SAM)](sam.md), a heavy [Transformer](https://www.ultralytics.com/glossary/transformer) model with substantial computational resource requirements. The FastSAM decouples the segment anything task into two sequential stages: all-[instance segmentation](https://www.ultralytics.com/glossary/instance-segmentation) and prompt-guided selection. The first stage uses [YOLOv8-seg](../tasks/segment.md) to produce the segmentation masks of all instances in the image. In the second stage, it outputs the region-of-interest corresponding to the prompt.
 
 ## Key Features
 
@@ -49,8 +49,51 @@ This table presents the available models with their specific pre-trained weights
 
 | Model Type | Pre-trained Weights                                                                         | Tasks Supported                              | Inference | Validation | Training | Export |
 | ---------- | ------------------------------------------------------------------------------------------- | -------------------------------------------- | --------- | ---------- | -------- | ------ |
-| FastSAM-s  | [FastSAM-s.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/FastSAM-s.pt) | [Instance Segmentation](../tasks/segment.md) | ✅        | ❌         | ❌       | ✅     |
-| FastSAM-x  | [FastSAM-x.pt](https://github.com/ultralytics/assets/releases/download/v8.2.0/FastSAM-x.pt) | [Instance Segmentation](../tasks/segment.md) | ✅        | ❌         | ❌       | ✅     |
+| FastSAM-s  | [FastSAM-s.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/FastSAM-s.pt) | [Instance Segmentation](../tasks/segment.md) | ✅        | ❌         | ❌       | ✅     |
+| FastSAM-x  | [FastSAM-x.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/FastSAM-x.pt) | [Instance Segmentation](../tasks/segment.md) | ✅        | ❌         | ❌       | ✅     |
+
+## FastSAM Comparison vs YOLO
+
+Here we compare Meta's SAM 2 models, including the smallest SAM2-t variant, with Ultralytics smallest segmentation model, [YOLO11n-seg](../tasks/segment.md):
+
+| Model                                                                                          | Size<br><sup>(MB)</sup> | Parameters<br><sup>(M)</sup> | Speed (CPU)<br><sup>(ms/im)</sup> |
+| ---------------------------------------------------------------------------------------------- | ----------------------- | ---------------------------- | --------------------------------- |
+| [Meta SAM-b](sam.md)                                                                           | 375                     | 93.7                         | 49401                             |
+| [Meta SAM2-b](sam-2.md)                                                                        | 162                     | 80.8                         | 31901                             |
+| [Meta SAM2-t](sam-2.md)                                                                        | 78.1                    | 38.9                         | 25997                             |
+| [MobileSAM](mobile-sam.md)                                                                     | 40.7                    | 10.1                         | 25381                             |
+| [FastSAM-s](fast-sam.md) with YOLOv8 [backbone](https://www.ultralytics.com/glossary/backbone) | 23.7                    | 11.8                         | 55.9                              |
+| Ultralytics [YOLOv8n-seg](yolov8.md)                                                           | **6.7** (11.7x smaller) | **3.4** (11.4x less)         | **24.5** (1061x faster)           |
+| Ultralytics [YOLO11n-seg](yolo11.md)                                                           | **5.9** (13.2x smaller) | **2.9** (13.4x less)         | **30.1** (864x faster)            |
+
+This comparison demonstrates the substantial differences in model sizes and speeds between SAM variants and YOLO segmentation models. While SAM provides unique automatic segmentation capabilities, YOLO models, particularly YOLOv8n-seg and YOLO11n-seg, are significantly smaller, faster, and more computationally efficient.
+
+Tests run on a 2025 Apple M4 Pro with 24GB of RAM using `torch==2.6.0` and `ultralytics==8.3.90`. To reproduce this test:
+
+!!! example
+
+    === "Python"
+
+        ```python
+        from ultralytics import ASSETS, SAM, YOLO, FastSAM
+
+        # Profile SAM2-t, SAM2-b, SAM-b, MobileSAM
+        for file in ["sam_b.pt", "sam2_b.pt", "sam2_t.pt", "mobile_sam.pt"]:
+            model = SAM(file)
+            model.info()
+            model(ASSETS)
+
+        # Profile FastSAM-s
+        model = FastSAM("FastSAM-s.pt")
+        model.info()
+        model(ASSETS)
+
+        # Profile YOLO models
+        for file_name in ["yolov8n-seg.pt", "yolo11n-seg.pt"]:
+            model = YOLO(file_name)
+            model.info()
+            model(ASSETS)
+        ```
 
 ## Usage Examples
 
@@ -58,9 +101,9 @@ The FastSAM models are easy to integrate into your Python applications. Ultralyt
 
 ### Predict Usage
 
-To perform object detection on an image, use the `predict` method as shown below:
+To perform [object detection](https://www.ultralytics.com/glossary/object-detection) on an image, use the `predict` method as shown below:
 
-!!! Example
+!!! example
 
     === "Python"
 
@@ -98,7 +141,7 @@ To perform object detection on an image, use the `predict` method as shown below
 
 This snippet demonstrates the simplicity of loading a pre-trained model and running a prediction on an image.
 
-!!! Example "FastSAMPredictor example"
+!!! example "FastSAMPredictor example"
 
     This way you can run inference on image and get all the segment `results` once and run prompts inference multiple times without running inference multiple times.
 
@@ -120,7 +163,7 @@ This snippet demonstrates the simplicity of loading a pre-trained model and runn
         text_results = predictor.prompt(everything_results, texts="a photo of a dog")
         ```
 
-!!! Note
+!!! note
 
     All the returned `results` in above examples are [Results](../modes/predict.md#working-with-results) object which allows access predicted masks and source image easily.
 
@@ -128,7 +171,7 @@ This snippet demonstrates the simplicity of loading a pre-trained model and runn
 
 Validation of the model on a dataset can be done as follows:
 
-!!! Example
+!!! example
 
     === "Python"
 
@@ -155,7 +198,7 @@ Please note that FastSAM only supports detection and segmentation of a single cl
 
 To perform object tracking on an image, use the `track` method as shown below:
 
-!!! Example
+!!! example
 
     === "Python"
 
@@ -172,7 +215,7 @@ To perform object tracking on an image, use the `track` method as shown below:
     === "CLI"
 
         ```bash
-        yolo segment track model=FastSAM-s.pt source="path/to/video/file.mp4" imgsz=640
+        yolo segment track model=FastSAM-s.pt source="path/to/video.mp4" imgsz=640
         ```
 
 ## FastSAM official Usage
@@ -183,26 +226,26 @@ FastSAM is also available directly from the [https://github.com/CASIA-IVA-Lab/Fa
 
 1. Clone the FastSAM repository:
 
-    ```shell
+    ```bash
     git clone https://github.com/CASIA-IVA-Lab/FastSAM.git
     ```
 
 2. Create and activate a Conda environment with Python 3.9:
 
-    ```shell
+    ```bash
     conda create -n FastSAM python=3.9
     conda activate FastSAM
     ```
 
 3. Navigate to the cloned repository and install the required packages:
 
-    ```shell
+    ```bash
     cd FastSAM
     pip install -r requirements.txt
     ```
 
 4. Install the CLIP model:
-    ```shell
+    ```bash
     pip install git+https://github.com/ultralytics/CLIP.git
     ```
 
@@ -211,37 +254,36 @@ FastSAM is also available directly from the [https://github.com/CASIA-IVA-Lab/Fa
 1. Download a [model checkpoint](https://drive.google.com/file/d/1m1sjY4ihXBU1fZXdQ-Xdj-mDltW-2Rqv/view?usp=sharing).
 
 2. Use FastSAM for inference. Example commands:
-
     - Segment everything in an image:
 
-        ```shell
+        ```bash
         python Inference.py --model_path ./weights/FastSAM.pt --img_path ./images/dogs.jpg
         ```
 
     - Segment specific objects using text prompt:
 
-        ```shell
+        ```bash
         python Inference.py --model_path ./weights/FastSAM.pt --img_path ./images/dogs.jpg --text_prompt "the yellow dog"
         ```
 
-    - Segment objects within a bounding box (provide box coordinates in xywh format):
+    - Segment objects within a [bounding box](https://www.ultralytics.com/glossary/bounding-box) (provide box coordinates in xywh format):
 
-        ```shell
+        ```bash
         python Inference.py --model_path ./weights/FastSAM.pt --img_path ./images/dogs.jpg --box_prompt "[570,200,230,400]"
         ```
 
     - Segment objects near specific points:
-        ```shell
+        ```bash
         python Inference.py --model_path ./weights/FastSAM.pt --img_path ./images/dogs.jpg --point_prompt "[[520,360],[620,300]]" --point_label "[1,0]"
         ```
 
-Additionally, you can try FastSAM through a [Colab demo](https://colab.research.google.com/drive/1oX14f6IneGGw612WgVlAiy91UHwFAvr9?usp=sharing) or on the [HuggingFace web demo](https://huggingface.co/spaces/An-619/FastSAM) for a visual experience.
+Additionally, you can try FastSAM through the CASIA-IVA-Lab [Colab demo](https://colab.research.google.com/drive/1oX14f6IneGGw612WgVlAiy91UHwFAvr9?usp=sharing).
 
 ## Citations and Acknowledgements
 
 We would like to acknowledge the FastSAM authors for their significant contributions in the field of real-time instance segmentation:
 
-!!! Quote ""
+!!! quote ""
 
     === "BibTeX"
 
@@ -262,7 +304,7 @@ The original FastSAM paper can be found on [arXiv](https://arxiv.org/abs/2306.12
 
 ### What is FastSAM and how does it differ from SAM?
 
-FastSAM, short for Fast Segment Anything Model, is a real-time convolutional neural network (CNN)-based solution designed to reduce computational demands while maintaining high performance in object segmentation tasks. Unlike the Segment Anything Model (SAM), which uses a heavier Transformer-based architecture, FastSAM leverages [Ultralytics YOLOv8-seg](../tasks/segment.md) for efficient instance segmentation in two stages: all-instance segmentation followed by prompt-guided selection.
+FastSAM, short for Fast Segment Anything Model, is a real-time [convolutional neural network](https://www.ultralytics.com/glossary/convolutional-neural-network-cnn) (CNN)-based solution designed to reduce computational demands while maintaining high performance in object segmentation tasks. Unlike the Segment Anything Model (SAM), which uses a heavier Transformer-based architecture, FastSAM leverages [Ultralytics YOLOv8-seg](../tasks/segment.md) for efficient instance segmentation in two stages: all-instance segmentation followed by prompt-guided selection.
 
 ### How does FastSAM achieve real-time segmentation performance?
 
@@ -270,11 +312,11 @@ FastSAM achieves real-time segmentation by decoupling the segmentation task into
 
 ### What are the practical applications of FastSAM?
 
-FastSAM is practical for a variety of computer vision tasks that require real-time segmentation performance. Applications include:
+FastSAM is practical for a variety of [computer vision](https://www.ultralytics.com/glossary/computer-vision-cv) tasks that require real-time segmentation performance. Applications include:
 
 - Industrial automation for quality control and assurance
 - Real-time video analysis for security and surveillance
-- Autonomous vehicles for object detection and segmentation
+- [Autonomous vehicles](https://www.ultralytics.com/glossary/autonomous-vehicles) for object detection and segmentation
 - Medical imaging for precise and quick segmentation tasks
 
 Its ability to handle various user interaction prompts makes FastSAM adaptable and flexible for diverse scenarios.

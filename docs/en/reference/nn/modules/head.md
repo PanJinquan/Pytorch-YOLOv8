@@ -5,7 +5,7 @@ keywords: Ultralytics, YOLO, Detection, Pose, RTDETRDecoder, nn modules, guides
 
 # Reference for `ultralytics/nn/modules/head.py`
 
-!!! Note
+!!! note
 
     This file is available at [https://github.com/ultralytics/ultralytics/blob/main/ultralytics/nn/modules/head.py](https://github.com/ultralytics/ultralytics/blob/main/ultralytics/nn/modules/head.py). If you spot a problem please help fix it by [contributing](https://docs.ultralytics.com/help/contributing/) a [Pull Request](https://github.com/ultralytics/ultralytics/edit/main/ultralytics/nn/modules/head.py) 🛠️. Thank you 🙏!
 
@@ -32,6 +32,18 @@ keywords: Ultralytics, YOLO, Detection, Pose, RTDETRDecoder, nn modules, guides
 <br><br><hr><br>
 
 ## ::: ultralytics.nn.modules.head.WorldDetect
+
+<br><br><hr><br>
+
+## ::: ultralytics.nn.modules.head.LRPCHead
+
+<br><br><hr><br>
+
+## ::: ultralytics.nn.modules.head.YOLOEDetect
+
+<br><br><hr><br>
+
+## ::: ultralytics.nn.modules.head.YOLOESegment
 
 <br><br><hr><br>
 
