@@ -122,6 +122,7 @@ class COCODataset(YOLODataset):
                 kpts = np.concatenate((kpts, ones), axis=-1)
             kpts = [s / (w, h, 1) for s in kpts] if len(kpts) > 0 else []
             kpts = np.asarray(kpts)  # (1,17,3)
+            kpts = kpts if self.use_keypoints else None
             item = {
                 "im_file": im_file,
                 "shape": (h, w),
