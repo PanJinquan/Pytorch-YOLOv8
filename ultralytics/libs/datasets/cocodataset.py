@@ -116,13 +116,16 @@ class COCODataset(YOLODataset):
             segs = [s[0] for s in segs]
             if self.use_obb: segs = image_utils.find_minAreaRect(segs)
             segs = [s / (w, h) for s in segs] if len(segs) > 0 else []
-            kpts = np.asarray(kpts)
-            if len(kpts) > 0 and kpts.shape[2] == 2:
-                ones = np.zeros(shape=(kpts.shape[0], kpts.shape[1], 1)) + 2
-                kpts = np.concatenate((kpts, ones), axis=-1)
-            kpts = [s / (w, h, 1) for s in kpts] if len(kpts) > 0 else []
-            kpts = np.asarray(kpts)  # (1,17,3)
-            kpts = kpts if self.use_keypoints else None
+            # TODO 关键点格式https://docs.ultralytics.com/zh/datasets/pose/#ultralytics-yolo-format
+            #      v=0未标注点; v=1标注了但是图像中不可见（例如遮挡）;v=2标注了并图像可见
+            if len(kpts) > 0 and self.use_keypoints:
+                kpts = np.asarray(kpts)  # (n-instance,n-points,2) or  (n-instance,n-points,3)
+                if kpts.shape[2] == 2:
+                    ones = np.zeros(shape=(kpts.shape[0], kpts.shape[1], 1)) + 2
+                    kpts = np.concatenate((kpts, ones), axis=-1)
+                kpts = np.asarray(kpts) / (w, h, 1)  # (1,17,3)
+            else:
+                kpts = None
             item = {
                 "im_file": im_file,
                 "shape": (h, w),
