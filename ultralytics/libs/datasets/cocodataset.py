@@ -121,8 +121,8 @@ class COCODataset(YOLODataset):
             if len(kpts) > 0 and self.use_keypoints:
                 kpts = np.asarray(kpts)  # (n-instance,n-points,2) or  (n-instance,n-points,3)
                 if kpts.shape[2] == 2:
-                    ones = np.zeros(shape=(kpts.shape[0], kpts.shape[1], 1)) + 2
-                    kpts = np.concatenate((kpts, ones), axis=-1)
+                    m = np.where((kpts[..., 0] < 0) | (kpts[..., 1] < 0), 0.0, 2.0).astype(np.float32)
+                    kpts = np.concatenate([kpts, m[..., None]], axis=-1)  # (nl, nkpt, 3)
                 kpts = np.asarray(kpts) / (w, h, 1)  # (1,17,3)
             else:
                 kpts = None

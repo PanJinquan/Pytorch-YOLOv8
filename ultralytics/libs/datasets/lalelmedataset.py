@@ -60,10 +60,17 @@ class LabelmeDataset(YOLODataset):
         # image_dir = os.path.join(os.path.dirname(kwargs['img_path']), "person")
         anno_dir = kwargs["img_path"]  # 图片目录和标注文件(*.json同目录)
         self.check = self.data.get("check", True)
+        self.kpt_names = self.data.get("kpt_names", [])
+        self.kpt_shape = self.data.get("kpt_shape", [])
         self.data_parser = parser_labelme.LabelMeDatasets(anno_dir=anno_dir,
                                                           image_dir=None,
                                                           class_name=self.class_dict,
-                                                          check=self.check)
+                                                          check=self.check,
+                                                          check_kpt=self.use_keypoints,
+                                                          use_kpt=self.use_keypoints,
+                                                          kpt_names=self.kpt_names,
+                                                          kpt_shape=self.kpt_shape,
+                                                          )
         super().__init__(*args, data=data, task=task, **kwargs)
 
     def parser_classes(self, names: dict):
@@ -98,6 +105,7 @@ class LabelmeDataset(YOLODataset):
             boxes = np.array(data_info["boxes"])
             cls = np.array(data_info["labels"])
             segs = data_info["points"]
+            kpts = data_info.get("keypoints", [])
             if self.check and len(boxes) == 0: continue  # 是否要去除无目标的数据，不去除好像也没有报错
             # 将(x,y,x,y)转为(x_center y_center width height)，见ultralytics.utils.instance
             cxcywh = image_utils.xyxy2cxcywh(boxes) / (w, h, w, h) if len(boxes) > 0 else boxes
@@ -105,13 +113,23 @@ class LabelmeDataset(YOLODataset):
             cls = cls.reshape(-1, 1)
             if self.use_obb: segs = image_utils.find_minAreaRect(segs)
             segs = [s / (w, h) for s in segs]
+            # TODO 关键点格式https://docs.ultralytics.com/zh/datasets/pose/#ultralytics-yolo-format
+            #      v=0未标注点; v=1标注了但是图像中不可见（例如遮挡）;v=2标注了并图像可见
+            if len(kpts) > 0 and self.use_keypoints:
+                kpts = np.asarray(kpts)  # (n-instance,n-points,2) or  (n-instance,n-points,3)
+                if kpts.shape[2] == 2:
+                    m = np.where((kpts[..., 0] < 0) | (kpts[..., 1] < 0), 0.0, 2.0).astype(np.float32)
+                    kpts = np.concatenate([kpts, m[..., None]], axis=-1)  # (nl, nkpt, 3)
+                kpts = np.asarray(kpts) / (w, h, 1)  # (1,17,3)
+            else:
+                kpts = None
             item = {
                 "im_file": im_file,
                 "shape": (h, w),
                 "cls": cls,
                 "bboxes": cxcywh,  # (x_center y_center width height)
                 "segments": segs,  # (nums,num-points,2)
-                "keypoints": None,  # (1,17,3) or (1,17,2)
+                "keypoints": kpts,  # (1,17,3)
                 "normalized": True,
                 "bbox_format": "xywh",  # YOLO中xywh指的是(x_center y_center width height)
             }
