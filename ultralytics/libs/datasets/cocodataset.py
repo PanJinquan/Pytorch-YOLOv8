@@ -75,6 +75,7 @@ class COCODataset(YOLODataset):
         super().__init__(*args, data=data, task=task, **kwargs)
 
     def parser_classes(self, names: dict):
+        if isinstance(names, list): names = {i: n for i, n in enumerate(names)}
         class_dict = {}
         for i, ns in names.items():
             ns = ns.split(",")
