@@ -74,7 +74,26 @@ class DetectionTrainer(BaseTrainer):
             (Dataset): YOLO dataset object configured for the specified mode.
         """
         gs = max(int(unwrap_model(self.model).stride.max()), 32)
-        return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == "val", stride=gs)
+        # return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == "val", stride=gs)
+        import os, sys
+
+        sys.path.insert(0, os.getcwd())  # fix: 解决多卡无法导入libs库的问题
+        data_type = self.data.get('data_type', "").lower()
+        if data_type == "coco":
+            from libs.datasets.cocodataset import build_coco_dataset
+
+            return build_coco_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == 'val', stride=gs)
+        elif data_type == "voc":
+            from libs.datasets.vocdataset import build_voc_dataset
+
+            return build_voc_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == 'val', stride=gs)
+        elif data_type == "labelme":
+            from libs.datasets.lalelmedataset import build_labelme_dataset
+
+            return build_labelme_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == 'val',
+                                         stride=gs)
+        else:
+            return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == "val", stride=gs)
 
     def get_dataloader(self, dataset_path: str, batch_size: int = 16, rank: int = 0, mode: str = "train"):
         """Construct and return dataloader for the specified mode.
