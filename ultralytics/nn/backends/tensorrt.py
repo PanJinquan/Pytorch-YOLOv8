@@ -2,15 +2,14 @@
 
 from __future__ import annotations
 
-import json
 from collections import OrderedDict, namedtuple
 from pathlib import Path
 
 import numpy as np
 import torch
 
-from ultralytics.utils import IS_JETSON, LINUX, LOGGER, PYTHON_VERSION
-from ultralytics.utils.checks import check_requirements, check_version
+from ultralytics.utils import IS_JETSON, LOGGER, PYTHON_VERSION
+from ultralytics.utils.checks import check_requirements, check_tensorrt, check_version
 
 from .base import BaseBackend
 
@@ -19,7 +18,7 @@ class TensorRTBackend(BaseBackend):
     """NVIDIA TensorRT inference backend for GPU-accelerated deployment.
 
     Loads and runs inference with NVIDIA TensorRT serialized engines (.engine files). Supports both TensorRT 7-9 and
-    TensorRT 10+ APIs, dynamic input shapes, FP16 precision, and DLA core offloading.
+    TensorRT 10/11 APIs, dynamic input shapes, FP16 precision, and DLA core offloading.
     """
 
     def load_model(self, weight: str | Path) -> None:
@@ -36,12 +35,11 @@ class TensorRTBackend(BaseBackend):
         try:
             import tensorrt as trt
         except ImportError:
-            if LINUX:
-                check_requirements("tensorrt>7.0.0,!=10.1.0")
+            check_tensorrt()
             import tensorrt as trt
 
         check_version(trt.__version__, ">=7.0.0", hard=True)
-        check_version(trt.__version__, "!=10.1.0", msg="https://github.com/ultralytics/ultralytics/pull/14239")
+        check_version(trt.__version__, "!=10.2.0", msg="https://github.com/ultralytics/ultralytics/pull/24367")
 
         if self.device.type == "cpu":
             self.device = torch.device("cuda:0")
@@ -50,29 +48,25 @@ class TensorRTBackend(BaseBackend):
         logger = trt.Logger(trt.Logger.INFO)
 
         # Read engine file
+        offset, metadata = self.engine_header(weight)
         with open(weight, "rb") as f, trt.Runtime(logger) as runtime:
-            try:
-                meta_len = int.from_bytes(f.read(4), byteorder="little")
-                metadata = json.loads(f.read(meta_len).decode("utf-8"))
-                dla = metadata.get("dla", None)
-                if dla is not None:
-                    runtime.DLA_core = int(dla)
-            except UnicodeDecodeError:
-                f.seek(0)
-                metadata = None
+            f.seek(offset)  # skip the metadata header, if any, that precedes the engine
+            if (dla := metadata.get("dla")) is not None:
+                runtime.DLA_core = int(dla)
             engine = runtime.deserialize_cuda_engine(f.read())
             self.apply_metadata(metadata)
         try:
             self.context = engine.create_execution_context()
-        except Exception as e:
+        except Exception:
             LOGGER.error("TensorRT model exported with a different version than expected\n")
-            raise e
+            raise
 
         # Setup bindings
         self.bindings = OrderedDict()
         self.output_names = []
         self.fp16 = False
         self.dynamic = False
+        # TensorRT 10 and 11 both drop the legacy binding API in favor of named I/O tensors
         self.is_trt10 = not hasattr(engine, "num_bindings")
         num = range(engine.num_io_tensors) if self.is_trt10 else range(engine.num_bindings)
 
