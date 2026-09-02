@@ -6,6 +6,7 @@
     @Brief  :
 """
 import os
+import numpy as np
 from ultralytics.utils import RANK, colorstr
 from ultralytics.data.dataset import YOLODataset
 from ultralytics.data.utils import HELP_URL, LOGGER
@@ -105,7 +106,7 @@ class VOCDataset(YOLODataset):
                 "im_file": im_file,
                 "shape": (h, w),
                 "cls": cls,
-                "bboxes": cxcywh,
+                "bboxes": cxcywh.astype(np.float32),
                 "segments": [],
                 "keypoints": None,
                 "normalized": True,

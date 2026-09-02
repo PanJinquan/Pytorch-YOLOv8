@@ -125,13 +125,14 @@ class COCODataset(YOLODataset):
                     m = np.where((kpts[..., 0] < 0) | (kpts[..., 1] < 0), 0.0, 2.0).astype(np.float32)
                     kpts = np.concatenate([kpts, m[..., None]], axis=-1)  # (nl, nkpt, 3)
                 kpts = np.asarray(kpts) / (w, h, 1)  # (1,17,3)
+                kpts = kpts.astype(np.float32)
             else:
                 kpts = None
             item = {
                 "im_file": im_file,
                 "shape": (h, w),
                 "cls": cls,
-                "bboxes": cxcywh,  # (x_center y_center width height)
+                "bboxes": cxcywh.astype(np.float32),  # (x_center y_center width height)
                 "segments": segs,  # (nums,num-points,2)
                 "keypoints": kpts,  # (1,17,3)
                 "normalized": True,

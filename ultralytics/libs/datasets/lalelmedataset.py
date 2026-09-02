@@ -128,7 +128,7 @@ class LabelmeDataset(YOLODataset):
                 "im_file": im_file,
                 "shape": (h, w),
                 "cls": cls,
-                "bboxes": cxcywh,  # (x_center y_center width height)
+                "bboxes": cxcywh.astype(np.float32),  # (x_center y_center width height)
                 "segments": segs,  # (nums,num-points,2)
                 "keypoints": kpts,  # (1,17,3)
                 "normalized": True,
